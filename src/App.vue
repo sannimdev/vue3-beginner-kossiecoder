@@ -1,5 +1,7 @@
 <template>
+    <!-- fragment 개념 도입됨 -->
     <div class="name">{{ name }}</div>
+    <div>Hi</div>
 </template>
 
 <script>
