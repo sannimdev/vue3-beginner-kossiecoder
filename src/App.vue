@@ -1,23 +1,26 @@
 <template>
-    <!-- fragment 개념 도입됨 -->
-    <div class="name">{{ greet }}</div>
+    <div class="name">{{ name }}</div>
+    <button class="btn btn-primary" v-on:click="updateName">Click</button>
 </template>
 
 <script>
 export default {
     setup() {
-        const name = 'Kossie Coder😁';
+        let name = 'Kossie Coder😁';
 
-        // Setup Function에서 여러 개의 함수를 정의하여 사용할 수도 있다.
+        // const consoleLog = () => {
+        //     console.log('Hello world!');
+        // };
 
-        const greeting = (name) => {
-            return 'Hello, ' + name + '?';
+        const updateName = () => {
+            name = 'Kossie Coder'; // 상태변경은 이루어졌지만 화면에는 반영되지 않았음.
+            console.log(name);
         };
 
-        const greet = greeting(name);
-
         return {
-            greet,
+            name,
+            // consoleLog,
+            updateName,
         };
     },
 };
