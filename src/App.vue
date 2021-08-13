@@ -1,7 +1,8 @@
 <template>
-    <div :class="nameClass">{{ name }}</div>
-    <input :type="type" v-bind:value="name" />
-    <button class="btn btn-primary" @click="updateName">Click</button>
+    <div class="name">{{ name }}</div>
+    <!-- <input type="text" v-bind:value="name" @input="updateName" /> -->
+    <input type="text" v-model="name" />
+    <button class="btn btn-primary" @click="onSubmit">Click</button>
 </template>
 
 <script>
@@ -13,21 +14,20 @@ export default {
 
         // ref를 이용하여야 화면단까지 변경사항이 반영된다.
         const name = ref('Kossie');
-        const type = ref('number');
-        const nameClass = ref('');
 
-        const updateName = () => {
-            // ref의 value 속성에 있는 값을 변경해야 reactive한 상태의 변경이 이루어진다 (화면 단까지 변경사항이 반영됨)
-            name.value = 'Coder';
-            type.value = 'text';
-            nameClass.value = 'name';
+        const onSubmit = () => {
+            console.log(name.value);
         };
+
+        // @input 으로 지정할 시
+        // const updateName = (e) => {
+        //     name.value = e.target.value;
+        // };
 
         return {
             name,
-            updateName,
-            type,
-            nameClass,
+            onSubmit,
+            // updateName,
         };
     },
 };
