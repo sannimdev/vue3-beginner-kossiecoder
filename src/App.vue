@@ -1,33 +1,42 @@
 <template>
-    <div class="name">{{ name }}</div>
-    <!-- <input type="text" v-bind:value="name" @input="updateName" /> -->
-    <input type="text" v-model="name" />
-    <button class="btn btn-primary" @click="onSubmit">Click</button>
+    <div class="container">
+        <h2>To-Do List</h2>
+        <form class="d-flex" @submit.prevent="onSubmit">
+            <div class="flex-grow-1 mr-2">
+                <input
+                    class="form-control"
+                    type="text"
+                    v-model="todo"
+                    placeholder="Type new to-do"
+                />
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit">Add</button>
+            </div>
+        </form>
+        {{ todos }}
+    </div>
 </template>
 
 <script>
 import { ref } from 'vue';
 export default {
     setup() {
-        // 일반 변수를 사용한다면 상태의 변경이 이루어지더라도 변경된 값이 반영되지 않는다는 것에 유의하자.
-        // let name = 'Kossie Coder😁';
-
-        // ref를 이용하여야 화면단까지 변경사항이 반영된다.
-        const name = ref('Kossie');
+        const todo = ref('');
+        const todos = ref([]);
 
         const onSubmit = () => {
-            console.log(name.value);
+            // e.preventDefault(); template에서 .prevent로 대체
+            todos.value.push({
+                id: Date.now(),
+                subject: todo.value,
+            });
         };
 
-        // @input 으로 지정할 시
-        // const updateName = (e) => {
-        //     name.value = e.target.value;
-        // };
-
         return {
-            name,
+            todo,
+            todos,
             onSubmit,
-            // updateName,
         };
     },
 };
