@@ -15,10 +15,8 @@
             </div>
         </form>
         {{ todos }}
-        <div class="card mt-2">
-            <div class="card-body p-2">
-                {{ todos[0].subject }}
-            </div>
+        <div class="card mt-2" v-for="todo in todos" :key="todo.id">
+            <div class="card-body p-2">{{ todo.subject }}</div>
         </div>
     </div>
 </template>
