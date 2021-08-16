@@ -17,16 +17,21 @@
             </div>
             <div v-show="hasError" style="color: red;">This field cannot be empty</div>
         </form>
-        {{ todos }}
-        <div class="card mt-2" v-for="todo in todos" :key="todo.id">
-            <div class="card-body p-2">
-                <div class="form-check">
+        <div v-if="!todos.length">
+            추가된 Todo가 없습니다.
+        </div>
+        <div class="card mt-2" v-for="(todo, index) in todos" :key="todo.id">
+            <div class="card-body p-2 d-flex align-items-center">
+                <div class="form-check flex-grow-1">
                     <input class="form-check-input" type="checkbox" v-model="todo.completed" />
                     <!-- 🐯 스타일 바인딩 유심히 살펴보기 -->
                     <!-- <label class="form-check-label" :style="todo.completed ? todoStyle : {}">{{ -->
                     <label class="form-check-label" :class="{ todo: todo.completed }">{{
                         todo.subject
                     }}</label>
+                </div>
+                <div>
+                    <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">Delete</button>
                 </div>
             </div>
         </div>
@@ -72,11 +77,16 @@ export default {
             }
         };
 
+        const deleteTodo = (index) => {
+            console.log('delete todo', index);
+            todos.value.splice(index, 1);
+        };
+
         /*
-v-if: 토글 시 비용이 많이 듦. 조건을 만족하지 않으면 DOM Elements에서 삭제됨
-- 런타임 동안 자주 바뀌는 요소가 아닌 경우
-v-show: 초기 렌더링 비용이 많이 듦. (style의 display 속성을 none으로 변경하여 비활성화함)
-- Toggle이 자주 필요할 때
+            v-if: 토글 시 비용이 많이 듦. 조건을 만족하지 않으면 DOM Elements에서 삭제됨
+            - 런타임 동안 자주 바뀌는 요소가 아닌 경우
+            v-show: 초기 렌더링 비용이 많이 듦. (style의 display 속성을 none으로 변경하여 비활성화함)
+            - Toggle이 자주 필요할 때
         */
 
         return {
@@ -85,6 +95,7 @@ v-show: 초기 렌더링 비용이 많이 듦. (style의 display 속성을 none�
             todoStyle,
             onSubmit,
             hasError,
+            deleteTodo,
         };
     },
 };
