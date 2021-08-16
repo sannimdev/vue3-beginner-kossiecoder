@@ -22,7 +22,11 @@
             <div class="card-body p-2">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" v-model="todo.completed" />
-                    <label class="form-check-label">{{ todo.subject }}</label>
+                    <!-- 🐯 스타일 바인딩 유심히 살펴보기 -->
+                    <!-- <label class="form-check-label" :style="todo.completed ? todoStyle : {}">{{ -->
+                    <label class="form-check-label" :class="{ todo: todo.completed }">{{
+                        todo.subject
+                    }}</label>
                 </div>
             </div>
         </div>
@@ -47,6 +51,10 @@ export default {
             },
         ]);
         const hasError = ref(false);
+        const todoStyle = {
+            textDecoration: 'line-through',
+            color: 'gray',
+        };
 
         const onSubmit = () => {
             if (todo.value === '') {
@@ -74,6 +82,7 @@ v-show: 초기 렌더링 비용이 많이 듦. (style의 display 속성을 none�
         return {
             todo,
             todos,
+            todoStyle,
             onSubmit,
             hasError,
         };
@@ -82,7 +91,8 @@ v-show: 초기 렌더링 비용이 많이 듦. (style의 display 속성을 none�
 </script>
 
 <style>
-.name {
-    color: red;
+.todo {
+    color: gray;
+    text-decoration: line-through;
 }
 </style>
