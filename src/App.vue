@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h2>To-Do List</h2>
-        <TodoSimpleForm />
+        <TodoSimpleForm @add-todo="addTodo" />
         <div v-if="!todos.length">
             추가된 Todo가 없습니다.
         </div>
@@ -32,7 +32,6 @@ export default {
         TodoSimpleForm,
     },
     setup() {
-        const todo = ref('');
         const todos = ref([
             {
                 id: 1,
@@ -45,26 +44,13 @@ export default {
                 completed: false,
             },
         ]);
-        const hasError = ref(false);
         const todoStyle = {
             textDecoration: 'line-through',
             color: 'gray',
         };
 
-        const onSubmit = () => {
-            if (todo.value === '') {
-                hasError.value = true;
-                return;
-            } else {
-                hasError.value = false;
-                // e.preventDefault(); template에서 .prevent로 대체
-                todos.value.push({
-                    id: Date.now(),
-                    subject: todo.value,
-                    completed: false,
-                });
-                todo.value = '';
-            }
+        const addTodo = (todo) => {
+            todos.value.push(todo);
         };
 
         const deleteTodo = (index) => {
@@ -72,19 +58,10 @@ export default {
             todos.value.splice(index, 1);
         };
 
-        /*
-            v-if: 토글 시 비용이 많이 듦. 조건을 만족하지 않으면 DOM Elements에서 삭제됨
-            - 런타임 동안 자주 바뀌는 요소가 아닌 경우
-            v-show: 초기 렌더링 비용이 많이 듦. (style의 display 속성을 none으로 변경하여 비활성화함)
-            - Toggle이 자주 필요할 때
-        */
-
         return {
-            todo,
             todos,
             todoStyle,
-            onSubmit,
-            hasError,
+            addTodo,
             deleteTodo,
         };
     },
