@@ -21,6 +21,7 @@
 import { ref } from 'vue';
 
 export default {
+    emits: ['add-todo'],
     /* context => 자식 컴포넌트에서 부모 컴포넌트로 보낼 때 필요한 객체 */
     setup(props, context) {
         const todo = ref('');
