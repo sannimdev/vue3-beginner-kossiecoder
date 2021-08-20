@@ -5,7 +5,7 @@
         <div v-if="!todos.length">
             추가된 Todo가 없습니다.
         </div>
-        <TodoList :todos="todos" @toggle-todo="toggleTodo" />
+        <TodoList :todos="todos" @toggle-todo="toggleTodo" @delete-todo="deleteTodo" />
     </div>
 </template>
 
@@ -21,16 +21,16 @@ export default {
     },
     setup() {
         const todos = ref([
-            {
-                id: 1,
-                subject: '휴대폰 사기',
-                completed: false,
-            },
-            {
-                id: 2,
-                subject: '장보기',
-                completed: false,
-            },
+            // {
+            //     id: 1,
+            //     subject: '휴대폰 사기',
+            //     completed: false,
+            // },
+            // {
+            //     id: 2,
+            //     subject: '장보기',
+            //     completed: false,
+            // },
         ]);
         const todoStyle = {
             textDecoration: 'line-through',
