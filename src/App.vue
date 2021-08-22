@@ -43,27 +43,24 @@ export default {
             color: 'gray',
         };
 
-        const addTodo = (todo) => {
+        const addTodo = async (todo) => {
             // 데이터베이스에 Todo 항목을 저장하기
             error.value = '';
-            axios
-                .post('http://localhost:3000/todos', {
+            try {
+                const response = await axios.post('http://localhost:3000/todos', {
                     subject: todo.subject,
                     completed: todo.completed,
-                })
-                .then((res) => {
-                    console.log(res);
-                    todos.value.push(todo);
-                })
-                .catch((err) => {
-                    /*
-                        경우의 수
-                            - DB서버가 죽었을 때 (ERR_CONNECTION_REFUSED)
-                    */
-                    console.log(err);
-                    error.value = 'Something went wrong😅';
                 });
-            console.log('hello');
+
+                todos.value.push(response.data);
+            } catch (error) {
+                /*
+                    경우의 수
+                        - DB서버가 죽었을 때 (ERR_CONNECTION_REFUSED)
+                */
+                console.log(error);
+                error.value = 'Something went wrong😅';
+            }
         };
 
         const deleteTodo = (index) => {
