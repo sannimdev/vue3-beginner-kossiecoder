@@ -43,6 +43,18 @@ export default {
             color: 'gray',
         };
 
+        const getTodos = async () => {
+            try {
+                const res = await axios.get('http://localhost:3000/todos');
+                console.log(res);
+                todos.value = res.data;
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        getTodos();
+
         const addTodo = async (todo) => {
             // 데이터베이스에 Todo 항목을 저장하기
             error.value = '';
@@ -58,7 +70,7 @@ export default {
                     경우의 수
                         - DB서버가 죽었을 때 (ERR_CONNECTION_REFUSED)
                 */
-                console.log(error);
+                console.error(error);
                 error.value = 'Something went wrong😅';
             }
         };
