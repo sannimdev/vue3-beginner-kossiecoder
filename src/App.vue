@@ -63,6 +63,7 @@ export default {
                     console.log(err);
                     error.value = 'Something went wrong😅';
                 });
+            console.log('hello');
         };
 
         const deleteTodo = (index) => {

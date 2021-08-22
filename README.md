@@ -16,3 +16,7 @@
         "profile": { "name": "typicode" }
     }
     ```
+-   개발서버 실행하기
+    ```
+    json-server --watch db.json
+    ```
