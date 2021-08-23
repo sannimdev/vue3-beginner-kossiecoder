@@ -75,9 +75,15 @@ export default {
             }
         };
 
-        const deleteTodo = (index) => {
-            console.log('delete todo', index);
-            todos.value.splice(index, 1);
+        const deleteTodo = async (index) => {
+            const id = todos.value[index].id;
+            try {
+                const response = await axios.delete('http://localhost:3000/todos/' + id);
+                todos.value.splice(index, 1);
+                console.log(response);
+            } catch (error) {
+                console.error(error);
+            }
         };
 
         const toggleTodo = (index) => {

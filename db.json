@@ -1,24 +1,9 @@
 {
   "todos": [
     {
-      "subject": "asdf",
-      "completed": false,
-      "id": 1
-    },
-    {
       "subject": "buy milk",
       "completed": false,
       "id": 2
-    },
-    {
-      "subject": "go to bed",
-      "completed": false,
-      "id": 3
-    },
-    {
-      "subject": "hello",
-      "completed": false,
-      "id": 4
     },
     {
       "subject": "bye",
