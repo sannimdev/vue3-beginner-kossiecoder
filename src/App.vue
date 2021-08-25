@@ -12,7 +12,7 @@
         <hr />
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item" v-if="currentPage !== 1">
+                <li class="page-item" v-if="currentPage !== 1" @click="getTodos(currentPage - 1)">
                     <a class="page-link" href="#">Previous</a>
                 </li>
                 <li
@@ -21,14 +21,13 @@
                     :key="page"
                     :class="currentPage === page ? 'active' : ''"
                 >
-                    <a class="page-link" href="#">{{ page }}</a>
+                    <a class="page-link" href="#" @click="getTodos(page)">{{ page }}</a>
                 </li>
                 <li v-if="numberOfPages !== currentPage" class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" href="#" @click="getTodos(currentPage + 1)">Next</a>
                 </li>
             </ul>
         </nav>
-        {{ currentPage }} / {{ numberOfPages }}
     </div>
 </template>
 
@@ -70,10 +69,11 @@ export default {
             color: 'gray',
         };
 
-        const getTodos = async () => {
+        const getTodos = async (page = currentPage.value) => {
+            currentPage.value = page;
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/todos?_page=${currentPage.value}&_limit=${limit}`
+                    `http://localhost:3000/todos?_page=${page}&_limit=${limit}`
                 );
                 numberOfTodos.value = response.headers['x-total-count'];
                 todos.value = response.data;
@@ -151,6 +151,7 @@ export default {
             error,
             numberOfPages,
             currentPage,
+            getTodos,
         };
     },
 };
