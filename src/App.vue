@@ -60,9 +60,23 @@ export default {
         const limit = 5;
         const currentPage = ref(1);
 
+        // watchEffect(() => {
+        //     console.log('currentPage: ', currentPage.value);
+        //     console.log('numberOfTodos: ', numberOfTodos.value);
+        // });
+
         const numberOfPages = computed(() => {
             return Math.ceil(numberOfTodos.value / limit);
         });
+
+        // const a = reactive({
+        //     b: 1,
+        // });
+
+        // watchEffect(() => {
+        //     console.log(a.b);
+        // });
+        // a.b = 4;
 
         const todoStyle = {
             textDecoration: 'line-through',
