@@ -5,10 +5,10 @@
         <hr />
         <TodoSimpleForm @add-todo="addTodo" />
         <div style="color: red;">{{ error }}</div>
-        <div v-if="!filteredTodos.length">
+        <div v-if="!todos.length">
             There is nothing to display
         </div>
-        <TodoList :todos="filteredTodos" @toggle-todo="toggleTodo" @delete-todo="deleteTodo" />
+        <TodoList :todos="todos" @toggle-todo="toggleTodo" @delete-todo="deleteTodo" />
         <hr />
         <nav aria-label="Page navigation example">
             <ul class="pagination">
@@ -45,12 +45,12 @@ export default {
     setup() {
         const todos = ref([
             // {
-            //     id: 1,
+                //     id: 1,
             //     subject: '휴대폰 사기',
             //     completed: false,
             // },
             // {
-            //     id: 2,
+                //     id: 2,
             //     subject: '장보기',
             //     completed: false,
             // },
@@ -59,6 +59,7 @@ export default {
         const numberOfTodos = ref(0);
         const limit = 5;
         const currentPage = ref(1);
+        const searchText = ref('');
 
         // const a = reactive({
         //     b: 1,
@@ -78,9 +79,6 @@ export default {
             return Math.ceil(numberOfTodos.value / limit);
         });
 
-        watch([currentPage, numberOfTodos], (currentPage, prev) => {
-            console.log(currentPage, prev);
-        });
 
         const todoStyle = {
             textDecoration: 'line-through',
@@ -91,7 +89,7 @@ export default {
             currentPage.value = page;
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/todos?_page=${page}&_limit=${limit}`
+                    `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
                 );
                 numberOfTodos.value = response.headers['x-total-count'];
                 todos.value = response.data;
@@ -147,16 +145,20 @@ export default {
             }
         };
 
-        const searchText = ref('');
 
-        const filteredTodos = computed(() => {
-            if (searchText.value) {
-                return todos.value.filter((todo) => {
-                    return todo.subject.includes(searchText.value);
-                });
-            }
-            return todos.value;
+        watch(searchText, (current, prev) => {
+            getTodos(1);
+            console.log(current, prev);
         });
+
+        // const filteredTodos = computed(() => {
+        //     if (searchText.value) {
+        //         return todos.value.filter((todo) => {
+        //             return todo.subject.includes(searchText.value);
+        //         });
+        //     }
+        //     return todos.value;
+        // });
 
         return {
             todos,
@@ -165,7 +167,7 @@ export default {
             deleteTodo,
             toggleTodo,
             searchText,
-            filteredTodos,
+            // filteredTodos,
             error,
             numberOfPages,
             currentPage,
