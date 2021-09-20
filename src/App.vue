@@ -45,12 +45,12 @@ export default {
     setup() {
         const todos = ref([
             // {
-                //     id: 1,
+            //     id: 1,
             //     subject: '휴대폰 사기',
             //     completed: false,
             // },
             // {
-                //     id: 2,
+            //     id: 2,
             //     subject: '장보기',
             //     completed: false,
             // },
@@ -79,7 +79,6 @@ export default {
             return Math.ceil(numberOfTodos.value / limit);
         });
 
-
         const todoStyle = {
             textDecoration: 'line-through',
             color: 'gray',
@@ -89,7 +88,7 @@ export default {
             currentPage.value = page;
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/todos?subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
+                    `http://localhost:3000/todos?_sort=id&_order=desc&subject_like=${searchText.value}&_page=${page}&_limit=${limit}`
                 );
                 numberOfTodos.value = response.headers['x-total-count'];
                 todos.value = response.data;
@@ -109,7 +108,9 @@ export default {
                     completed: todo.completed,
                 });
 
-                todos.value.push(response.data);
+                // todos.value.push(response.data);
+                console.log(response);
+                getTodos(1);
             } catch (error) {
                 /*
                     경우의 수
@@ -144,7 +145,6 @@ export default {
                 error.value = 'Something went wrong.';
             }
         };
-
 
         watch(searchText, (current, prev) => {
             getTodos(1);
