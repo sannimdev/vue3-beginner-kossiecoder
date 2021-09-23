@@ -20,3 +20,8 @@
     ```
     json-server --watch db.json
     ```
+
+## 서버에서 받아올 때
+
+-   app.js: 작성한 vue 컴포넌트 등 앱 구동에 필요한 js코드 압축
+-   chunk-vendors: 사용한 패키지(node-modules)와 관련된 파일
