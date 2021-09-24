@@ -1,14 +1,20 @@
 <template>
     <div class="card mt-2" v-for="(todo, index) in todos" :key="todo.id">
-        <div @click="moveToPage(todo.id)" class="card-body p-2 d-flex align-items-center">
+        <div
+            @click="moveToPage(todo.id)"
+            class="card-body p-2 d-flex align-items-center"
+            style="cursor: pointer;"
+        >
             <div class="form-check flex-grow-1">
                 <!-- 자식컴포넌트가 된 이상 v-model로 양방향바인딩을 하는 것은 옳지 않다. (props로 받은 속성이니까) -->
                 <input
                     class="form-check-input"
                     type="checkbox"
                     :checked="todo.completed"
-                    @input="toggleTodo(index)"
+                    @change="toggleTodo(index, $event)"
+                    @click.stop
                 />
+                <!-- 혹은 @click.stop="toggleTodo(index)" 로 해도 된다.-->
                 <!-- 🐯 스타일 바인딩 유심히 살펴보기 -->
                 <!-- <label class="form-check-label" :style="todo.completed ? todoStyle : {}">{{ -->
                 <label class="form-check-label" :class="{ todo: todo.completed }">{{
@@ -16,7 +22,10 @@
                 }}</label>
             </div>
             <div>
-                <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">Delete</button>
+                <!-- 버블링  (클릭 이벤트가 발생하면 위로 전파 )-->
+                <button class="btn btn-danger btn-sm" @click.stop="deleteTodo(index)">
+                    Delete
+                </button>
             </div>
         </div>
     </div>
@@ -37,8 +46,8 @@ export default {
     setup(props, context) {
         const router = useRouter();
 
-        const toggleTodo = (index) => {
-            context.emit('toggle-todo', index);
+        const toggleTodo = (index, event) => {
+            context.emit('toggle-todo', index, event.target.checked);
         };
 
         const deleteTodo = (index) => {
