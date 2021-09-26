@@ -3,8 +3,8 @@
     <div v-if="loading">
         Loading...
     </div>
-    <form v-else>
-        <div class="row">
+    <form v-else @submit.prevent="onSave">
+        <div class="row mb-4">
             <div class="col-6">
                 <div class="form-group">
                     <label>Todo Subject</label>
@@ -41,9 +41,10 @@ export default {
         const router = useRouter();
         const todo = ref(null);
         const loading = ref(true);
+        const id = route.params.id;
 
         const getTodo = async () => {
-            const res = await axios.get('http://localhost:3000/todos/' + route.params.id);
+            const res = await axios.get(`http://localhost:3000/todos/${id}`);
 
             todo.value = res.data;
             loading.value = false;
@@ -59,12 +60,21 @@ export default {
             });
         };
 
+        const onSave = async () => {
+            const res = await axios.put(`http://localhost:3000/todos/${id}`, {
+                subject: todo.value.subject,
+                completed: todo.value.completed,
+            });
+            console.log(res);
+        };
+
         getTodo();
         return {
             todo,
             loading,
             toggleTodoStatus,
             moveTodoListPage,
+            onSave,
         };
     },
 };
