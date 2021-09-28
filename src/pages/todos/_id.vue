@@ -33,16 +33,7 @@
 </template>
 
 <script>
-import {
-    ref,
-    computed,
-    onBeforeMount,
-    onMounted,
-    onBeforeUpdate,
-    onUpdated,
-    onBeforeUnmount,
-    onUnmounted,
-} from 'vue';
+import { ref, computed, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
@@ -53,34 +44,6 @@ export default {
         Toast,
     },
     setup() {
-        onBeforeMount(() => {
-            console.log('onBeforeMount');
-            console.log(document.querySelector('#kossie')); // DOM에 아직 올라가지 않은 상태
-        });
-
-        onMounted(() => {
-            console.log('onMounted');
-            console.log(document.querySelector('#kossie'));
-        });
-
-        /* state가 변할 때마다의 로직을 실행하고 싶을 때 */
-        onBeforeUpdate(() => {
-            console.log('before update');
-        });
-
-        onUpdated(() => {
-            console.log('onUpdated');
-        });
-
-        onBeforeUnmount(() => {
-            console.log('before unmount');
-        });
-        onUnmounted(() => {
-            console.log('unmounted');
-        });
-
-        console.log('Hello vue3 setup() function!');
-
         const route = useRoute();
         const router = useRouter();
         const todo = ref(null);
@@ -90,6 +53,12 @@ export default {
         const showToast = ref(false);
         const toastAlertType = ref('');
         const toastMessage = ref('');
+        const timeout = ref(null);
+
+        onUnmounted(() => {
+            console.log('unmounted');
+            clearTimeout(timeout.value);
+        });
 
         const getTodo = async () => {
             try {
@@ -124,7 +93,8 @@ export default {
             toastAlertType.value = type;
             toastMessage.value = message;
             showToast.value = true;
-            setTimeout(() => {
+            timeout.value = setTimeout(() => {
+                console.log('toast initialized');
                 // 3초 뒤 사라지기
                 toastMessage.value = '';
                 toastAlertType.value = '';
