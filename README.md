@@ -63,3 +63,27 @@ console.log(JSON.stringify(f) === JSON.stringify(g)); // true
 
 // lodash를 사용하여 객체의 내용을 비교하도록 한다. (lib)
 ```
+
+## Vue3 라이프사이클
+
+```js
+import { onMounted, onUpdated, onUnmounted } from 'vue';
+export default {
+    setup() {
+
+        //beforeCreate, create는 setup() 함수 안에 그대로 기술하면 된다.
+
+        onMounted(()=> {
+            console.log('onMounted');
+        })
+
+        onUpdated(()=>{
+            console.log('onUpdated)
+        })
+
+        onUnmounted(()=>{
+            console.log('onUnmounted')
+        })
+    }
+};
+```

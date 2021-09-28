@@ -29,10 +29,20 @@
         <button class="btn btn-outline-dark ml-2" @click="moveTodoListPage">Cancel</button>
     </form>
     <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+    <div id="kossie">Coder</div>
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import {
+    ref,
+    computed,
+    onBeforeMount,
+    onMounted,
+    onBeforeUpdate,
+    onUpdated,
+    onBeforeUnmount,
+    onUnmounted,
+} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
@@ -43,6 +53,34 @@ export default {
         Toast,
     },
     setup() {
+        onBeforeMount(() => {
+            console.log('onBeforeMount');
+            console.log(document.querySelector('#kossie')); // DOM에 아직 올라가지 않은 상태
+        });
+
+        onMounted(() => {
+            console.log('onMounted');
+            console.log(document.querySelector('#kossie'));
+        });
+
+        /* state가 변할 때마다의 로직을 실행하고 싶을 때 */
+        onBeforeUpdate(() => {
+            console.log('before update');
+        });
+
+        onUpdated(() => {
+            console.log('onUpdated');
+        });
+
+        onBeforeUnmount(() => {
+            console.log('before unmount');
+        });
+        onUnmounted(() => {
+            console.log('unmounted');
+        });
+
+        console.log('Hello vue3 setup() function!');
+
         const route = useRoute();
         const router = useRouter();
         const todo = ref(null);
