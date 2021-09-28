@@ -28,6 +28,7 @@
         <button type="submit" class="btn btn-primary" :disabled="!todoUpdated">Save</button>
         <button class="btn btn-outline-dark ml-2" @click="moveTodoListPage">Cancel</button>
     </form>
+    <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
 
 <script>
@@ -35,8 +36,12 @@ import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
+import Toast from '@/components/Toast.vue';
 
 export default {
+    components: {
+        Toast,
+    },
     setup() {
         const route = useRoute();
         const router = useRouter();
@@ -44,15 +49,23 @@ export default {
         const originalTodo = ref(null);
         const loading = ref(true);
         const id = route.params.id;
+        const showToast = ref(false);
+        const toastAlertType = ref('');
+        const toastMessage = ref('');
 
         const getTodo = async () => {
-            const res = await axios.get(`http://localhost:3000/todos/${id}`);
+            try {
+                const res = await axios.get(`http://localhost:3000/todos/${id}`);
 
-            // 사용자가 조작할 수 있는 todo객체와 원본 todo객체의 값을 서로 공유하지 않도록 복사하기
-            todo.value = { ...res.data };
-            originalTodo.value = { ...res.data };
+                // 사용자가 조작할 수 있는 todo객체와 원본 todo객체의 값을 서로 공유하지 않도록 복사하기
+                todo.value = { ...res.data };
+                originalTodo.value = { ...res.data };
 
-            loading.value = false;
+                loading.value = false;
+            } catch (error) {
+                triggerToast('Something went wrong...😅', 'danger');
+                console.error(error);
+            }
         };
 
         const todoUpdated = computed(() => {
@@ -69,13 +82,31 @@ export default {
             });
         };
 
+        const triggerToast = (message, type = 'success') => {
+            toastAlertType.value = type;
+            toastMessage.value = message;
+            showToast.value = true;
+            setTimeout(() => {
+                // 3초 뒤 사라지기
+                toastMessage.value = '';
+                toastAlertType.value = '';
+                showToast.value = false;
+            }, 3000);
+        };
+
         const onSave = async () => {
-            const res = await axios.put(`http://localhost:3000/todos/${id}`, {
-                subject: todo.value.subject,
-                completed: todo.value.completed,
-            });
-            console.log(res);
-            originalTodo.value = { ...todo.value };
+            try {
+                const res = await axios.put(`http://localhost:3000/todos/${id}`, {
+                    subject: todo.value.subject,
+                    completed: todo.value.completed,
+                });
+                console.log(res);
+                originalTodo.value = { ...todo.value };
+                triggerToast('Successfully saved!');
+            } catch (error) {
+                console.error(error);
+                triggerToast('Something went wrong!');
+            }
         };
 
         getTodo();
@@ -86,6 +117,9 @@ export default {
             moveTodoListPage,
             onSave,
             todoUpdated,
+            showToast,
+            toastMessage,
+            toastAlertType,
         };
     },
 };
