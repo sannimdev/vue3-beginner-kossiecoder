@@ -36,18 +36,21 @@
             </ul>
         </nav>
     </div>
+    <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+import axios from 'axios';
+import { ref, computed, watch, onUnmounted } from 'vue';
 import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoList from '@/components/TodoList.vue';
-import axios from 'axios';
+import Toast from '@/components/Toast.vue';
 
 export default {
     components: {
         TodoSimpleForm,
         TodoList,
+        Toast,
     },
     setup() {
         const todos = ref([
@@ -68,20 +71,6 @@ export default {
         const currentPage = ref(1);
         const searchText = ref('');
 
-        // const a = reactive({
-        //     b: 1,
-        //     c: 3,
-        // });
-
-        // watch(
-        //     () => [a.b, a.c],
-        //     (current, prev) => {
-        //         console.log(current, prev);
-        //     }
-        // );
-
-        // a.b = 2;
-
         const numberOfPages = computed(() => {
             return Math.ceil(numberOfTodos.value / limit);
         });
@@ -90,6 +79,28 @@ export default {
             textDecoration: 'line-through',
             color: 'gray',
         };
+
+        //Toast
+        const showToast = ref(false);
+        const toastAlertType = ref('');
+        const toastMessage = ref('');
+        const toastTimeout = ref(null);
+        const triggerToast = (message, type = 'success') => {
+            toastAlertType.value = type;
+            toastMessage.value = message;
+            showToast.value = true;
+            toastTimeout.value = setTimeout(() => {
+                console.log('toast initialized');
+                // 3초 뒤 사라지기
+                toastMessage.value = '';
+                toastAlertType.value = '';
+                showToast.value = false;
+            }, 3000);
+        };
+
+        onUnmounted(() => {
+            clearTimeout(toastTimeout);
+        });
 
         const getTodos = async (page = currentPage.value) => {
             currentPage.value = page;
@@ -101,6 +112,7 @@ export default {
                 todos.value = response.data;
             } catch (error) {
                 console.error(error);
+                triggerToast('Something went wrong!', 'danger');
             }
         };
 
@@ -125,6 +137,7 @@ export default {
                 */
                 console.error(error);
                 error.value = 'Something went wrong😅';
+                triggerToast('Something went wrong!', 'danger');
             }
         };
 
@@ -136,6 +149,7 @@ export default {
                 console.log(response);
             } catch (error) {
                 console.error(error);
+                triggerToast('Something went wrong!', 'danger');
             }
         };
 
@@ -150,6 +164,7 @@ export default {
             } catch (error) {
                 console.log(error);
                 error.value = 'Something went wrong.';
+                triggerToast('Something went wrong!', 'danger');
             }
         };
 
@@ -187,6 +202,10 @@ export default {
             numberOfPages,
             currentPage,
             getTodos,
+            // Toast
+            showToast,
+            toastAlertType,
+            toastMessage,
         };
     },
 };

@@ -87,3 +87,108 @@ export default {
     }
 };
 ```
+
+## Vue2와 작업할 때의 차이점
+
+-   실습 코드 중에서 `Toast`관련 선언 변수(상수), 함수가 많았다.
+-   Vue2라면 Options API는 `computed`, `watch`, `methods` 등의 구역이 나뉘어 있어 스크롤을 하며 왔다갔다 하며 봐야 했다.
+
+    ```js
+    export default {
+        data() {
+            return {
+                //Toast에 관한 부분
+                toastId: 1,
+                toastName: 'abcde',
+                toastNickname: '00700',
+                // 기타
+                systemId: 1,
+                systemOut: 2,
+                systemName: 3,
+                ComputerId: 1,
+                ComputerOut: 2,
+                ComputerName: 4,
+                ComputerIn: 5,
+            };
+        },
+        computed: {
+            // Toast
+            toastValue() {
+                return 0;
+            },
+            toastValueOfValue() {
+                return 0;
+            },
+            toastValueVvalue() {
+                return 0;
+            },
+            // 기타
+            systemValue() {
+                return 1;
+            },
+            systemValueOut() {
+                return 2;
+            },
+            systemValueName() {
+                return 3;
+            },
+            computerIdValue() {
+                return 1;
+            },
+            computerOutValue() {
+                return 2;
+            },
+            computerNameValue() {
+                return 3;
+            },
+            computerInValue() {
+                return 4;
+            },
+        },
+        methods: {
+            // Toast
+            clearToastTimeout() {},
+            setToastTimeoutId() {},
+            setToastId() {},
+            setToastName() {},
+            // 기타
+            setSystemId() {},
+            setSystemOut() {},
+            setSystemName() {},
+            setComputerId() {},
+            setComputerOut() {},
+            setComputerName() {},
+            setComputerIn() {},
+        },
+    };
+    ```
+
+-   Vue3에서는 setup() 함수에서는 논리적으로 유사한 것들을 짝지어 한데 모아둘 수 있는 장점이 있다.
+    이렇게 정돈된 인상을 줄 수 있다. (오..........😮)
+
+    ```js
+    import { ref, onUnmounted } from 'vue';
+    export default {
+        setup() {
+            // Toast
+            const toastId = ref(null);
+            const toastTimtout = () => {};
+            const toastValue = 333;
+            const initializeToast = () => {};
+
+            onUnmounted(() => {
+                clearTimeout(toastTimeout);
+            });
+
+            // System
+            const systemId = ref(null);
+            const systemTimeout = () => {};
+            const systemValue = 444;
+
+            // Computer
+            const computerId = ref(null);
+            const computerValue = () => {};
+            const computerValueValue = () => {};
+        },
+    };
+    ```
