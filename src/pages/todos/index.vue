@@ -41,10 +41,11 @@
 
 <script>
 import axios from 'axios';
-import { ref, computed, watch, onUnmounted } from 'vue';
+import { ref, computed, watch } from 'vue';
 import TodoSimpleForm from '@/components/TodoSimpleForm.vue';
 import TodoList from '@/components/TodoList.vue';
 import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
 
 export default {
     components: {
@@ -80,27 +81,7 @@ export default {
             color: 'gray',
         };
 
-        //Toast
-        const showToast = ref(false);
-        const toastAlertType = ref('');
-        const toastMessage = ref('');
-        const toastTimeout = ref(null);
-        const triggerToast = (message, type = 'success') => {
-            toastAlertType.value = type;
-            toastMessage.value = message;
-            showToast.value = true;
-            toastTimeout.value = setTimeout(() => {
-                console.log('toast initialized');
-                // 3초 뒤 사라지기
-                toastMessage.value = '';
-                toastAlertType.value = '';
-                showToast.value = false;
-            }, 3000);
-        };
-
-        onUnmounted(() => {
-            clearTimeout(toastTimeout);
-        });
+        const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
 
         const getTodos = async (page = currentPage.value) => {
             currentPage.value = page;

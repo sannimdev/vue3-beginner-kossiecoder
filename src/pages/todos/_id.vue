@@ -33,11 +33,12 @@
 </template>
 
 <script>
-import { ref, computed, onUnmounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
 
 export default {
     components: {
@@ -50,15 +51,8 @@ export default {
         const originalTodo = ref(null);
         const loading = ref(true);
         const id = route.params.id;
-        const showToast = ref(false);
-        const toastAlertType = ref('');
-        const toastMessage = ref('');
-        const timeout = ref(null);
 
-        onUnmounted(() => {
-            console.log('unmounted');
-            clearTimeout(timeout.value);
-        });
+        const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
 
         const getTodo = async () => {
             try {
@@ -87,19 +81,6 @@ export default {
             router.push({
                 name: 'Todos',
             });
-        };
-
-        const triggerToast = (message, type = 'success') => {
-            toastAlertType.value = type;
-            toastMessage.value = message;
-            showToast.value = true;
-            timeout.value = setTimeout(() => {
-                console.log('toast initialized');
-                // 3초 뒤 사라지기
-                toastMessage.value = '';
-                toastAlertType.value = '';
-                showToast.value = false;
-            }, 3000);
         };
 
         const onSave = async () => {
