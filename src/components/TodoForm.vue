@@ -8,6 +8,9 @@
                 <div class="form-group">
                     <label>Subject</label>
                     <input v-model="todo.subject" type="text" class="form-control" />
+                    <div class="subjectError" v-if="subjectError" style="color: red;">
+                        {{ subjectError }}
+                    </div>
                 </div>
             </div>
             <div v-if="editing" class="col-6">
@@ -69,6 +72,7 @@ export default {
             completed: false,
         });
         const originalTodo = ref(null);
+        const subjectError = ref('');
         const loading = ref(false);
         const id = route.params.id;
 
@@ -106,7 +110,12 @@ export default {
         };
 
         const onSave = async () => {
+            subjectError.value = '';
             try {
+                if (!todo.value.subject) {
+                    subjectError.value = 'Subject is required';
+                    return;
+                }
                 // eslint-disable-next-line no-unused-vars
                 let res;
                 const data = {
@@ -138,6 +147,7 @@ export default {
         return {
             todo,
             loading,
+            subjectError,
             toggleTodoStatus,
             moveTodoListPage,
             onSave,
