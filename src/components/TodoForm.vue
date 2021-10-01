@@ -6,7 +6,7 @@
         <div class="row mb-4">
             <div class="col-6">
                 <div class="form-group">
-                    <label>Todo Subject</label>
+                    <label>Subject</label>
                     <input v-model="todo.subject" type="text" class="form-control" />
                 </div>
             </div>
@@ -35,7 +35,9 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary" :disabled="!todoUpdated">Save</button>
+        <button type="submit" class="btn btn-primary" :disabled="!todoUpdated">
+            {{ editing ? 'Update' : 'Create' }}
+        </button>
         <button class="btn btn-outline-dark ml-2" @click="moveTodoListPage">Cancel</button>
     </form>
     <Toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
@@ -105,13 +107,24 @@ export default {
 
         const onSave = async () => {
             try {
-                const res = await axios.put(`http://localhost:3000/todos/${id}`, {
+                // eslint-disable-next-line no-unused-vars
+                let res;
+                const data = {
                     subject: todo.value.subject,
                     completed: todo.value.completed,
-                });
-                console.log(res);
+                    body: todo.value.body,
+                };
+                if (props.editing) {
+                    res = await axios.put(`http://localhost:3000/todos/${id}`, data);
+                } else {
+                    res = await axios.post(`http://localhost:3000/todos`, data);
+                    todo.value.subject = '';
+                    todo.value.body = '';
+                }
+
                 originalTodo.value = { ...todo.value };
-                triggerToast('Successfully saved!');
+                const message = 'Successfully ' + (props.editing ? 'Updated' : 'Created');
+                triggerToast(message);
             } catch (error) {
                 console.error(error);
                 triggerToast('Something went wrong!');
