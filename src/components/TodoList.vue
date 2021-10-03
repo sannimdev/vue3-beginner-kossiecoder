@@ -5,10 +5,10 @@
             class="card-body p-2 d-flex align-items-center"
             style="cursor: pointer;"
         >
-            <div class="form-check flex-grow-1">
+            <div class="flex-grow-1">
                 <!-- 자식컴포넌트가 된 이상 v-model로 양방향바인딩을 하는 것은 옳지 않다. (props로 받은 속성이니까) -->
                 <input
-                    class="form-check-input"
+                    style="margin: 0 10px;"
                     type="checkbox"
                     :checked="todo.completed"
                     @change="toggleTodo(index, $event)"
@@ -17,9 +17,7 @@
                 <!-- 혹은 @click.stop="toggleTodo(index)" 로 해도 된다.-->
                 <!-- 🐯 스타일 바인딩 유심히 살펴보기 -->
                 <!-- <label class="form-check-label" :style="todo.completed ? todoStyle : {}">{{ -->
-                <label class="form-check-label" :class="{ todo: todo.completed }">{{
-                    todo.subject
-                }}</label>
+                <span :class="{ todo: todo.completed }">{{ todo.subject }}</span>
             </div>
             <div>
                 <!-- 버블링  (클릭 이벤트가 발생하면 위로 전파 )-->
