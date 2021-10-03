@@ -21,13 +21,13 @@
             </div>
             <div>
                 <!-- 버블링  (클릭 이벤트가 발생하면 위로 전파 )-->
-                <button class="btn btn-danger btn-sm" @click.stop="openModal(index)">
+                <button class="btn btn-danger btn-sm" @click.stop="openModal(todo.id)">
                     Delete
                 </button>
             </div>
         </div>
     </div>
-    <Modal v-if="showModal" @close="closeModal" />
+    <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
 </template>
 
 <script>
@@ -66,8 +66,9 @@ export default {
             todoDeleteId.value = null;
         };
 
-        const deleteTodo = (index) => {
-            context.emit('delete-todo', index);
+        const deleteTodo = () => {
+            context.emit('delete-todo', todoDeleteId.value);
+            showModal.value = false;
         };
 
         const moveToPage = (todoId) => {

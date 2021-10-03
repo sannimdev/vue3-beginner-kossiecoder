@@ -125,12 +125,11 @@ export default {
             }
         };
 
-        const deleteTodo = async (index) => {
-            const id = todos.value[index].id;
+        const deleteTodo = async (id) => {
+            error.value = '';
             try {
-                const response = await axios.delete('http://localhost:3000/todos/' + id);
-                todos.value.splice(index, 1);
-                console.log(response);
+                await axios.delete('http://localhost:3000/todos/' + id);
+                getTodos(1);
             } catch (error) {
                 console.error(error);
                 triggerToast('Something went wrong!', 'danger');
