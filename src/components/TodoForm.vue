@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <label>Subject</label>
                     <input v-model="todo.subject" type="text" class="form-control" />
-                    <div class="subjectError" v-if="subjectError" style="color: red;">
+                    <div class="subjectError text-red" v-if="subjectError">
                         {{ subjectError }}
                     </div>
                 </div>
@@ -21,9 +21,7 @@
                         class="btn"
                         :class="todo.completed ? 'btn-success' : 'btn-danger'"
                         @click="toggleTodoStatus"
-                    >
-                        {{ todo.completed ? 'Completed' : 'Incomplete' }}
-                    </button>
+                    ></button>
                 </div>
             </div>
             <div class="col-12">
@@ -160,4 +158,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.text-red {
+    color: red;
+}
+</style>
