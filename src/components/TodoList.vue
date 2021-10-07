@@ -27,9 +27,8 @@
             </div>
         </div>
     </div>
-    <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
-    <teleport to="#kossie">
-        <div>Kossie Coder</div>
+    <teleport to="#modal">
+        <Modal v-if="showModal" @close="closeModal" @delete="deleteTodo" />
     </teleport>
 </template>
 
