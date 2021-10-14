@@ -5,13 +5,19 @@
     <form v-else @submit.prevent="onSave">
         <div class="row mb-4">
             <div class="col-6">
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label>Subject</label>
                     <input v-model="todo.subject" type="text" class="form-control" />
                     <div class="subjectError text-red" v-if="subjectError">
                         {{ subjectError }}
                     </div>
-                </div>
+                </div> -->
+                <Input
+                    label="Subject"
+                    :subject="todo.subject"
+                    :error="subjectError"
+                    @update-subject="updateTodoSubject"
+                />
             </div>
             <div v-if="editing" class="col-6">
                 <label>Completed</label>
@@ -55,10 +61,12 @@ import axios from 'axios';
 import _ from 'lodash';
 import Toast from '@/components/Toast.vue';
 import { useToast } from '@/composables/toast';
+import Input from '@/components/Input.vue';
 
 export default {
     components: {
         Toast,
+        Input,
     },
     props: {
         editing: {
@@ -79,6 +87,10 @@ export default {
         const id = route.params.id;
 
         const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
+
+        const updateTodoSubject = (newValue) => {
+            todo.value.subject = newValue;
+        };
 
         const getTodo = async () => {
             loading.value = true;
@@ -157,16 +169,13 @@ export default {
             showToast,
             toastMessage,
             toastAlertType,
+            updateTodoSubject,
         };
     },
 };
 </script>
 
 <style scoped>
-.text-red {
-    color: red;
-}
-
 .fade-enter-active,
 .fade-leave-active {
     transition: all 0.5s ease;
