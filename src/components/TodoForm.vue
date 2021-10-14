@@ -12,12 +12,7 @@
                         {{ subjectError }}
                     </div>
                 </div> -->
-                <Input
-                    label="Subject"
-                    :subject="todo.subject"
-                    :error="subjectError"
-                    @update-subject="updateTodoSubject"
-                />
+                <Input label="Subject" :error="subjectError" v-model:subject="todo.subject" />
             </div>
             <div v-if="editing" class="col-6">
                 <label>Completed</label>
@@ -55,7 +50,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import _ from 'lodash';
@@ -81,16 +76,17 @@ export default {
             subject: '',
             completed: false,
         });
+
+        onUpdated(() => {
+            console.log(todo.value.subject, 'updated...');
+        });
+
         const originalTodo = ref(null);
         const subjectError = ref('');
         const loading = ref(false);
         const id = route.params.id;
 
         const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
-
-        const updateTodoSubject = (newValue) => {
-            todo.value.subject = newValue;
-        };
 
         const getTodo = async () => {
             loading.value = true;
@@ -169,7 +165,6 @@ export default {
             showToast,
             toastMessage,
             toastAlertType,
-            updateTodoSubject,
         };
     },
 };
