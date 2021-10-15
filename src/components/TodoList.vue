@@ -37,7 +37,7 @@
 <script>
 import { useRouter } from 'vue-router';
 import Modal from '@/components/DeleteModal.vue';
-import { ref } from 'vue';
+import { getCurrentInstance, ref } from 'vue';
 import List from '@/components/List.vue';
 
 export default {
@@ -53,13 +53,14 @@ export default {
         },
     },
     emits: ['toggle-todo', 'delete-todo'],
-    setup(props, context) {
+    setup() {
+        const { emit } = getCurrentInstance();
         const router = useRouter();
         const showModal = ref(false);
         const todoDeleteId = ref(null);
 
         const toggleTodo = (index, event) => {
-            context.emit('toggle-todo', index, event.target.checked);
+            emit('toggle-todo', index, event.target.checked);
         };
 
         const openModal = (id) => {
@@ -73,7 +74,7 @@ export default {
         };
 
         const deleteTodo = () => {
-            context.emit('delete-todo', todoDeleteId.value);
+            emit('delete-todo', todoDeleteId.value);
             showModal.value = false;
         };
 
