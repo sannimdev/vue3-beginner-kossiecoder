@@ -2,6 +2,9 @@
 
 프로젝트로 배우는 Vue.js 3
 
+-   [Vue3 Devtools (Beta) for Chrome](https://chrome.google.com/webstore/detail/vuejs-devtools/ljjemllljcmogpfapbkkighbhhppjdbg)
+    -   `2021. 10. 14.` 기준 vue3 환경은 beta버전만 디버깅 툴이 활성화된다.
+
 ## json-server 설치하기
 
 -   개발을 위해 DB역할을 하기 위한 [json-server](https://www.npmjs.com/package/json-server)를 설치하기
@@ -192,3 +195,10 @@ export default {
         },
     };
     ```
+
+## 기타 공지
+
+현재 뷰 버전 3.1에서 useContext가 deprecated 되었고
+
+다음 마이너 버전 업데이트(3.2 일 가능성이 높음)에서 useContext가 삭제 될 예정입니다.
+그래서 emit 하실때 전에 설명드린 setup(props, {emit})를 통해서 emit을 쓰시거나 useContext 대신에 getCurrentInstance를 사용하시면 됩니다.
