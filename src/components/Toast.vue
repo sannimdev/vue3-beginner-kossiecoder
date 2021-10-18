@@ -1,6 +1,8 @@
 <template>
-    <div class="alert toast-box" :class="`alert-${type}`" role="alert">
-        {{ message }}
+    <div class="toast-box">
+        <div class="alert" :class="`alert-${type}`" role="alert">
+            {{ message }}
+        </div>
     </div>
 </template>
 

@@ -15,22 +15,21 @@
     <div class="container">
         <router-view />
     </div>
-    <toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+    <transition name="slide">
+        <toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
+    </transition>
 </template>
 
 <script>
 import Toast from '@/components/Toast.vue';
-import { useStore } from 'vuex';
+import { useToast } from './composables/toast';
 
 export default {
     components: {
         Toast,
     },
     setup() {
-        const store = useStore();
-        const { showToast, toastMessage, toastAlertType, triggerToast } = store.state;
-
-        console.log(showToast.value);
+        const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
 
         return {
             showToast,
@@ -42,4 +41,21 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.slide-enter-active,
+.slide-leave-active {
+    transition: all 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+    opacity: 0;
+    transform: translateY(-30px);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
