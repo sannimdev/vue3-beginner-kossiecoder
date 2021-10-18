@@ -15,10 +15,28 @@
     <div class="container">
         <router-view />
     </div>
+    <toast v-if="showToast" :message="toastMessage" :type="toastAlertType" />
 </template>
 
 <script>
-export default {};
+import Toast from '@/components/Toast.vue';
+import { useToast } from '@/composables/toast';
+
+export default {
+    components: {
+        Toast,
+    },
+    setup() {
+        const { showToast, toastMessage, toastAlertType, triggerToast } = useToast();
+
+        return {
+            showToast,
+            toastMessage,
+            toastAlertType,
+            triggerToast,
+        };
+    },
+};
 </script>
 
 <style></style>
