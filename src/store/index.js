@@ -1,5 +1,10 @@
 import { createStore } from 'vuex';
 
 export default createStore({
-    state: {},
+    state: {
+        toastMessage: '',
+        toastAlertType: '',
+        showToast: false,
+        timeout: null,
+    },
 });
