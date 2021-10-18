@@ -219,3 +219,18 @@ export default {
 ```
 npm install vuex@next --save
 ```
+
+### 상태 조회하기
+
+-   state
+    -   전역 상태
+    -   어떤 컴포넌트에서든 접근할 수 있음.
+    -   mutations를 이용해서만 상태 변경이 가능하다.
+-   getters
+    -   컴포넌트에서 사용하는 computed의 개념과 동일하다고 보면 된다.
+
+### 상태 변경하기
+
+-   mutations
+    -   항상 동기적으로만 작동해야 한다.
+-   actions
