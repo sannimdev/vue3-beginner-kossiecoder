@@ -213,3 +213,9 @@ export default {
     };
 </script>
 ```
+
+## Vuex
+
+```
+npm install vuex@next --save
+```
