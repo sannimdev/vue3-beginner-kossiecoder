@@ -28,7 +28,7 @@ export default {
         },
     },
     actions: {
-        triggerToast({ commit }, message, type = 'success') {
+        triggerToast({ commit }, { message, type = 'success' }) {
             // commit('UPDATE_TOAST_MESSAGE', message);
             // commit('UPDATE_TOAST_ALERT_TYPE', type);
             // commit('UPDATE_TOAST_STATUS', true);
