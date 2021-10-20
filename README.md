@@ -198,8 +198,9 @@ export default {
 
 ## 기타 공지
 
-현재 뷰 버전 3.1에서 useContext가 deprecated 되었고
+### useContext 대신 getCurrentInstance 사용하기
 
+현재 뷰 버전 3.1에서 useContext가 deprecated 되었고
 다음 마이너 버전 업데이트(3.2 일 가능성이 높음)에서 useContext가 삭제 될 예정입니다.
 그래서 emit 하실때 전에 설명드린 setup(props, {emit})를 통해서 emit을 쓰시거나 useContext 대신에 getCurrentInstance를 사용하시면 됩니다.
 
@@ -212,6 +213,22 @@ export default {
         },
     };
 </script>
+```
+
+### emit 사용 시 emits 항목 추가하기
+
+```js
+export default {
+    // 어떤 emit 이벤트 이름을 사용하고 있는지 구분하기가 쉽다.
+    emits: ['이벤트이름1', '이벤트이름2', 'toggleTodo', 'deleteTodo'],
+    setup() {
+        const { emit } = getCurrentInstance;
+        const func = () => {
+            const value = 1;
+            emit('이벤트이름1', value);
+        };
+    },
+};
 ```
 
 ## Vuex
